@@ -23,10 +23,40 @@
 
 	<script type="text/javascript">
         var app=angular.module('pinyougou',['pagination']);
-        app.controller('brandController',function($scope,$http){
+
+        //前端服务层
+        app.service('brandService',function ($http) {
+            //读取列表数据绑定到表单中
+			this.findAll=function () {
+				return $http.get('../brand/findAll.do');
+            }
+            //增加
+            this.add=function (entity) {
+				return $http.post('../brand/add.do',entity);
+            }
+            //修改
+            this.update=function (entity) {
+				return $http.post('../brand/update.do',entity);
+            }
+            //查询实体
+            this.findOne=function (id) {
+				return $http.get('../brand/findOne.do?id='+id);
+            }
+            //删除
+			this.dele=function (ids) {
+				return $http.get('../brand/delete.do?ids=' + ids);
+            }
+			//搜索
+			this.search=function (page,size,searchEntity) {
+				return $http.post('../brand/search.do?page='+page +'&size='+size,searchEntity);
+            }
+        });
+
+        //前端控制层
+        app.controller('brandController',function($scope,$http,brandService){
             //查询品牌列表
             $scope.findAll=function(){
-                $http.get('../brand/findAll.do').success(
+                brandService.findAll().success(
                     function(response){
                         $scope.list=response;
                     }
@@ -49,11 +79,13 @@
 
             //新增
 			$scope.save=function () {
-				var methodName='add';
+				var object=null;
                 if($scope.entity.id != null){
-					methodName='update';
+					object=brandService.update($scope.entity);
+				}else {
+                    object=brandService.add($scope.entity);
 				}
-                $http.post('../brand/'+methodName+'.do',$scope.entity).success(
+                object.success(
 					function (response) {
 						if (response.success){
 							$scope.reloadList();//刷新
@@ -65,7 +97,7 @@
             }
             //查询实体
 			$scope.findOne=function (id) {
-				$http.get('../brand/findOne.do?id='+id).success(
+				brandService.findOne(id).success(
 					function (response) {
 						$scope.entity=response;
                     }
@@ -87,7 +119,7 @@
             //删除
 			$scope.dele=function () {
                 if (confirm('确定要删除吗?')) {
-                    $http.get('../brand/delete.do?ids=' + $scope.selectIds).success(
+                    brandService.dele($scope.selectIds).success(
                         function (response) {
                             if (response.success) {
                                 $scope.reloadList();
@@ -103,7 +135,7 @@
 
             //条件查询
             $scope.search=function (page,size) {
-				$http.post('../brand/search.do?page='+page +'&size='+size,$scope.searchEntity).success(
+				brandService.search(page,size,$scope.searchEntity).success(
                     function(response){
                         $scope.list=response.rows;//显示当前页数据
                         $scope.paginationConf.totalItems=response.total;//更新总记录数
