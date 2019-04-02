@@ -2,6 +2,9 @@ package com.pinyougou.entity;
 
 import java.io.Serializable;
 
+/**
+ * 返回结果信息
+ */
 public class Result implements Serializable {
     private boolean success;
     private String message;
