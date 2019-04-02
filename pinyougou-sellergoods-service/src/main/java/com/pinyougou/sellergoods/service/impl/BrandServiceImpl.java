@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.mapper.TbBrandMapper;
 import com.pinyougou.pojo.TbBrand;
+import com.pinyougou.pojo.TbBrandExample;
 import com.pinyougou.sellergoods.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,12 +23,40 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public PageResult findPage(int pageNum, int pageSize) {
+    public void add(TbBrand brand) {
+        brandMapper.insert(brand);
+    }
 
-        PageHelper.startPage(pageNum,pageSize);//分页
+    @Override
+    public TbBrand findOne(Long id) {
+        return brandMapper.selectByPrimaryKey(id);
+    }
 
-        Page<TbBrand> page = (Page<TbBrand>)brandMapper.selectByExample(null);
+    @Override
+    public void update(TbBrand brand) {
+        brandMapper.updateByPrimaryKey(brand);
+    }
 
-        return new PageResult(page.getTotal(),page.getResult());
+    @Override
+    public void delete(Long[] ids) {
+        for(Long id:ids){
+            brandMapper.deleteByPrimaryKey(id);
+        }
+    }
+    @Override
+    public PageResult findPage(TbBrand brand, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        TbBrandExample example=new TbBrandExample();
+        TbBrandExample.Criteria criteria = example.createCriteria();
+        if(brand!=null){
+            if(brand.getName()!=null && brand.getName().length()>0){
+                criteria.andNameLike("%"+brand.getName()+"%");
+            }
+            if(brand.getFirstChar()!=null && brand.getFirstChar().length()>0){
+                criteria.andFirstCharEqualTo(brand.getFirstChar());
+            }
+        }
+        Page<TbBrand> page= (Page<TbBrand>)brandMapper.selectByExample(example);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }

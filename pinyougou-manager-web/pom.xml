@@ -95,8 +95,8 @@
             <artifactId>pagehelper</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
+            <groupId>com.github.miemiedev</groupId>
+            <artifactId>mybatis-paginator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.pinyougou</groupId>
