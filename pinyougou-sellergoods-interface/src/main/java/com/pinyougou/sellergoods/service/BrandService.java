@@ -4,6 +4,7 @@ import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbBrand;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 品牌接口
@@ -44,4 +45,9 @@ public interface BrandService {
      * @return
      */
     public PageResult findPage(TbBrand brand, int pageNum,int pageSize);
+
+    /**
+     * 品牌下拉框数据
+     */
+    List<Map> selectOptionList();
 }
