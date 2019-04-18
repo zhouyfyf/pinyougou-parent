@@ -27,6 +27,18 @@ app.controller('baseController',function($scope){
             }
         }
 
+    //记录当前页的所有记录的id
+    $scope.AllRecordsId = [];
+    // 点击分页时清空全选和数组中的值
+    $scope.emptySelect = function() {
+        $scope.AllRecordsId = [];
+        $scope.selectIds = [];
+        if ($("#selall").prop("checked")) {
+            $("#selall").prop("checked", false);
+            $(":checkbox[name = 'as']").prop("checked", false);
+        }
+    }
+
     //提取json字符串数据中某个属性，返回拼接字符串 逗号分隔
     $scope.jsonToString=function(jsonString,key){
         var json=JSON.parse(jsonString);//将json字符串转换为json对象

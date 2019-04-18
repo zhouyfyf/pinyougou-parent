@@ -3,6 +3,7 @@ package com.pinyougou.mapper;
 import com.pinyougou.pojo.TbTypeTemplate;
 import com.pinyougou.pojo.TbTypeTemplateExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,6 @@ public interface TbTypeTemplateMapper {
     int updateByPrimaryKeySelective(TbTypeTemplate record);
 
     int updateByPrimaryKey(TbTypeTemplate record);
+
+    List<Map> selectOptionList();
 }

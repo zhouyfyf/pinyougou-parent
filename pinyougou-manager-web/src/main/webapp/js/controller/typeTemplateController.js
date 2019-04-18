@@ -86,7 +86,7 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
     //规格列表
     $scope.specificationList={data:[]};
 
-	//读取品牌列表
+	//读取规格列表
     $scope.findSpecList=function () {
         specificationService.selectOptionList().success(
             function (response) {

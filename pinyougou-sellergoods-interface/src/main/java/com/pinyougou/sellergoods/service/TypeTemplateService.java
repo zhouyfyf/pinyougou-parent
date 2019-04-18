@@ -61,5 +61,8 @@ public interface TypeTemplateService {
 	 */
 	public PageResult findPage(TbTypeTemplate typeTemplate, int pageNum, int pageSize);
 
-	
+	/**
+	 * 添加分类模板的查询
+	 */
+	public List<Map> selectOptionList();
 }
